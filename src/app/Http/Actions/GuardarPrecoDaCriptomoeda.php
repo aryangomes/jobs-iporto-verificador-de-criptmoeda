@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 class GuardarPrecoDaCriptomoeda
 {
 
-    public function __invoke(array $dadosDaCriptomoeda)
+    public function __invoke(array $dadosDaCriptomoeda): PrecoCriptomoeda
     {
         try {
             DB::beginTransaction();
@@ -21,7 +21,7 @@ class GuardarPrecoDaCriptomoeda
             return $precoCriptomoeda;
         } catch (\Exception $exception) {
             Log::error('GuardarPrecoDaCriptomoeda', [
-                'message' => $exception->getMessage()
+                'mensagem' => $exception->getMessage()
             ]);
             DB::rollBack();
         }

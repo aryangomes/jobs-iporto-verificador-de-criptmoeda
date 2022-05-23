@@ -15,4 +15,9 @@ class PrecoCriptomoeda extends Model
     protected $fillable = [
         'criptomoeda', 'preco_lance'
     ];
+
+    public function scopePorSymbol($query, $criptomoeda)
+    {
+        return $query->where('criptomoeda', '=', $criptomoeda);
+    }
 }
