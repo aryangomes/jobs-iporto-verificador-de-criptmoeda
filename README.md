@@ -1,2 +1,1 @@
-# jobs-iporto-verificador-de-criptmoeda
-Verificador de Criptmoeda
+# Verificador de Criptmoeda
