@@ -1,1 +1,1 @@
-# Verificador de Criptmoeda
+# Verificador de Criptomoeda
