@@ -14,7 +14,7 @@ class SaveBidPriceOnDataBase extends Command
      *
      * @var string
      */
-    protected $signature = 'c:saveBidPriceOnDataBase {criptomoeda?}';
+    protected $signature = 'c:saveBidPriceOnDataBase {criptomoeda? : Ticket ou símbolo da criptomoeda a ser verificada}';
 
     /**
      * The console command description.
@@ -22,6 +22,7 @@ class SaveBidPriceOnDataBase extends Command
      * @var string
      */
     protected $description = 'Guarda um preço de uma criptomoeda no banco de dados';
+
 
     /**
      * Execute the console command.
@@ -69,20 +70,30 @@ class SaveBidPriceOnDataBase extends Command
 
         $dadosRecuperadosDoPrecoCriptomoeda = $recuperarPrecoDaCriptomoeda($criptomoeda);
 
-        $dadosParaCadastrarPrecoCriptomoeda = [
-            'criptomoeda' => $dadosRecuperadosDoPrecoCriptomoeda->get('symbol'),
-            'preco_lance' => $dadosRecuperadosDoPrecoCriptomoeda->get('price'),
-        ];
+        if (is_null($dadosRecuperadosDoPrecoCriptomoeda)) {
+            $this->newLine();
 
-        $novoPrecoDaCriptomoeda = $this->cadastrarPrecoDaCriptomoedaNoBancoDeDados($dadosParaCadastrarPrecoCriptomoeda);
+            $this->error(__('comandos.criptomoeda_invalida', ['criptomoeda' => $criptomoeda]));
+        } else {
+            $dadosParaCadastrarPrecoCriptomoeda = [
+                'criptomoeda' => $dadosRecuperadosDoPrecoCriptomoeda->get('symbol'),
+                'preco_lance' => $dadosRecuperadosDoPrecoCriptomoeda->get('price'),
+            ];
 
-        $mensagemDeRespostaParaComando = "O preço mais recente de {$novoPrecoDaCriptomoeda->criptomoeda} é US$ {$novoPrecoDaCriptomoeda->preco_lance}";
+            $novoPrecoDaCriptomoeda = $this->cadastrarPrecoDaCriptomoedaNoBancoDeDados($dadosParaCadastrarPrecoCriptomoeda);
 
-        $this->newLine();
 
-        $this->info('Novo preço cadastrado com sucesso!');
+            $mensagemDeRespostaParaComando = __('comandos.preco_recente', [
+                'criptomoeda' => $novoPrecoDaCriptomoeda->criptomoeda,
+                'preco_lance' => $novoPrecoDaCriptomoeda->preco_lance,
+            ]);
 
-        $this->info($mensagemDeRespostaParaComando);
+            $this->newLine();
+
+            $this->info('Novo preço cadastrado com sucesso!');
+
+            $this->info($mensagemDeRespostaParaComando);
+        }
     }
 
     public function cadastrarPrecoDaCriptomoedaNoBancoDeDados(array $dadosParaCadastrarPrecoCriptomoeda)
