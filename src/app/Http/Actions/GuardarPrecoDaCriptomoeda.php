@@ -21,7 +21,7 @@ class GuardarPrecoDaCriptomoeda
             return $precoCriptomoeda;
         } catch (\Exception $exception) {
             Log::error('GuardarPrecoDaCriptomoeda', [
-                'mensagem' => $exception->getMessage()
+                'Mensagem do erro' => $exception->getMessage()
             ]);
             DB::rollBack();
         }

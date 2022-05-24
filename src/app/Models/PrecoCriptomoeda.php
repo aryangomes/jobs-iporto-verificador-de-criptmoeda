@@ -16,7 +16,14 @@ class PrecoCriptomoeda extends Model
         'criptomoeda', 'preco_lance'
     ];
 
-    public function scopePorSymbol($query, $criptomoeda)
+    /**
+     * Escopo local que filtra as criptomoedas dado o "symbol" (símbolo ou ticket) 
+     * da criptomoeda
+     * @param mixed $query
+     * @param string $criptomoeda
+     * @return mixed
+     */
+    public function scopePorSymbol($query, string $criptomoeda)
     {
         return $query->where('criptomoeda', '=', $criptomoeda);
     }

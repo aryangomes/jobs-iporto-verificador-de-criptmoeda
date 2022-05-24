@@ -24,6 +24,10 @@ class PrecoCriptomoedaFactory extends Factory
         ];
     }
 
+    /**
+     * Retornar um array com os "símbolos" das criptomoedas
+     * @return array
+     */
     public function gerarNomesDasCriptomoedas(): array
     {
         return [
