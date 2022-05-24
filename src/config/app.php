@@ -213,4 +213,15 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Url Api Binance
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+
+    'url_api_binance' => env('URL_API_BINANCE', 'https://testnet.binancefuture.com')
+
+
 ];
