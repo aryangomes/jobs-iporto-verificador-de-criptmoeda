@@ -29,3 +29,48 @@ Seguindo o *Single Responsibility Principle* (Princípio da Responsabilidade Ún
 Para gravar e recuperar o preço e o nome da criptomoeda no banco dedados foi criada a classe [PrecoCriptomoeda](src/app/Models/PrecoCriptomoeda.php). Nela, há um escopo local que faz a busca dos preços das criptomoedas e filtra de acordo com a criptomoeda informada.
 
 Por fim foi criada um [arquivo](src/lang/pt_br/comandos.php) para guardar algumas mensagens que são exibidas ao se executarem os dois comandos. Assim como, classes de testes ([SaveBidPriceOnDataBaseTest](src/tests/Feature/Commands/SaveBidPriceOnDataBaseTest.php) e [CheckAvgBigPriceTest](src/tests/Feature/Commands/CheckAvgBigPriceTest.php)), para assegurar que os comandos terão os resultados esperados.
+
+## Instalação
+
+1. Execute o comando `cd jobs-iporto-verificador-de-preco-de-criptomoeda/src` para acessar a pasta do projeto
+
+2. Execute o comando `composer install` para instalar as dependências do projeto
+
+3. Copie o arquivo `.env.example` e renomeie para `.env` (comando `cp .env.example .env`)
+
+4. Edite o arquivo `.env` e preencha com essas informações:
+
+- Ambiente de desenvolvimento
+
+```
+APP_ENV=local
+```
+
+- Dados do banco de dados
+
+```
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE= INFORME_O_NOME_DA_TABELA
+DB_USERNAME= INFORME_O_USUARIO
+DB_PASSWORD= INFORME_A_SENHA
+```
+
+- Url da API da BINANCE
+
+```
+URL_API_BINANCE=https://testnet.binancefuture.com
+```
+
+5. Execute o comando `./vendor/bin/sail up -d` para subir os serviços necessários para que o projeto seja executado
+
+6. Execute o comando `sail php artisan migrate` para executar os comandos de criação de banco de dados
+
+- Caso o comando de migração apresente algum erro, execute os seguintes comandos nessa ordem e execute o passo 6 novamente:
+
+  - sail artisan config:clear
+  - sail artisan config:cache
+  - sail artisan cache:clear
+
+7. O projeto está pronto para ter os comandos da tarefa executados!
