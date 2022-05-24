@@ -14,7 +14,7 @@ class SaveBidPriceOnDataBase extends Command
      *
      * @var string
      */
-    protected $signature = 'c:saveBidPriceOnDataBase {criptomoeda? : Ticket ou símbolo da criptomoeda a ser verificada}';
+    protected $signature = 'c:saveBidPriceOnDataBase {criptomoeda? : Ticket ou símbolo da criptomoeda a ser guardada no banco de dados (Opcional)}';
 
     /**
      * The console command description.

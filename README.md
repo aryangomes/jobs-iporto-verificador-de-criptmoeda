@@ -17,7 +17,15 @@ Foram criados dois comandos:
 
 - [SaveBidPriceOnDataBase](src/app/Console/Commands/SaveBidPriceOnDataBase.php): Salva o preço da criptomoeda recuperada da API da Binance no banco de dados
 
+  - Comando: `php artisan c:saveBidPriceOnDataBase {criptomoeda}`
+  - Argumento: `criptomoeda`  **(opcional)**  
+    - Informar "symbol" ou "ticket" da criptomoeda, caso queira guardar somente o preço dela
+  
 - [CheckAvgBigPrice](src/app/Console/Commands/CheckAvgBigPrice.php): Recupera os preços de uma determinada criptomoeda no banco de dados e calcula o preço médio dela. Caso o preço atual da criptomoeda estiver menor que 0.5% do que o preço médio dela, um alerta é exibido na impressão do comando
+
+  - Comando : `php artisan c:checkAvgBigPrice {criptomoeda}`
+  - Argumento: `criptomoeda` **(obrigatório)**
+    - Informar "symbol" ou "ticket" da criptomoeda
 
 Seguindo o *Single Responsibility Principle* (Princípio da Responsabilidade Única) foram criadas classes (localizada na pasta [Actions](src/app/Http/Actions/)) para separar a lógica das tarefas:
 
