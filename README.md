@@ -67,13 +67,10 @@ URL_API_BINANCE=https://testnet.binancefuture.com
 
 6. Execute o comando `sail php artisan migrate` para executar os comandos de criação de banco de dados
 
-<<<<<<< HEAD
 - Caso o comando de migração apresente algum erro, execute os seguintes comandos nessa ordem e execute o passo 6 novamente:
 
   - sail artisan config:clear
   - sail artisan config:cache
   - sail artisan cache:clear
 
-=======
->>>>>>> fa9ac3fa185cd18be9238060ad3095e00697e130
 7. O projeto está pronto para ter os comandos da tarefa executados!
