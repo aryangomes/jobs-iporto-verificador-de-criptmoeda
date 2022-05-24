@@ -4,7 +4,6 @@
 namespace App\Http\Actions;
 
 use App\Models\PrecoCriptomoeda;
-use Ramsey\Uuid\Type\Decimal;
 
 class GerarPrecoMedioDaCriptomoeda
 {
@@ -13,7 +12,8 @@ class GerarPrecoMedioDaCriptomoeda
     {
         $precosDeUmaCriptomoeda = PrecoCriptomoeda::porSymbol($criptomoeda)->orderBy('created_at', 'DESC')->limit(100)->get();
 
-        $precoMedioDaCriptomoeda = $precosDeUmaCriptomoeda->avg('preco_lance');
+        $precoMedioDaCriptomoeda =
+            !is_null($precosDeUmaCriptomoeda->avg('preco_lance')) ? $precosDeUmaCriptomoeda->avg('preco_lance') : 0;
 
         return  $precoMedioDaCriptomoeda;
     }

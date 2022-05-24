@@ -9,12 +9,17 @@ use Illuminate\Support\Facades\Http;
 
 class RecuperarPrecoDeUmaCriptomoedaEspecifica
 {
-    private string $baseUrl = 'https://testnet.binancefuture.com';
-    public function __invoke(string $criptomoeda): Collection
+    public function __invoke(string $criptomoeda): Collection|null
     {
-        $recuperarPrecoDaCriptomoedaUrl = "{$this->baseUrl}/fapi/v1/ticker/price?symbol={$criptomoeda}";
+        $baseUrl = config('app.url_api_binance');
+
+        $recuperarPrecoDaCriptomoedaUrl = "{$baseUrl}/fapi/v1/ticker/price?symbol={$criptomoeda}";
 
         $respostaRequisicao = Http::get($recuperarPrecoDaCriptomoedaUrl);
+
+        if ($respostaRequisicao->failed()) {
+            return null;
+        }
 
         return $respostaRequisicao->collect();
     }

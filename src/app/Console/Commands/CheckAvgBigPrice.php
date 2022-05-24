@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Actions\GerarPrecoMedioDaCriptomoeda;
 use App\Models\PrecoCriptomoeda;
+use Exception;
 use Illuminate\Console\Command;
 
 class CheckAvgBigPrice extends Command
@@ -13,7 +14,7 @@ class CheckAvgBigPrice extends Command
      *
      * @var string
      */
-    protected $signature = 'c:checkAvgBigPrice {criptomoeda}';
+    protected $signature = 'c:checkAvgBigPrice {criptomoeda : Ticket ou símbolo da criptomoeda a ser verificada}';
 
     /**
      * The console command description.
@@ -33,26 +34,50 @@ class CheckAvgBigPrice extends Command
         $criptomoeda = $this->argument('criptomoeda');
 
         if (is_null($criptomoeda)) {
-            $this->warn('Uma criptomoeda deve ser informada!');
-        } else {
-            $this->newLine();
-            $verificarPrecoMedioDeUmaCriptomoeda = new GerarPrecoMedioDaCriptomoeda();
-            $precoMedioDaCriptomoeda = $verificarPrecoMedioDeUmaCriptomoeda($criptomoeda);
-
-            $this->info("O preço médio da criptomoeda {$criptomoeda} é US$ {$precoMedioDaCriptomoeda}");
-
-            $precoMaisRecenteDaCriptomoeda = (float) PrecoCriptomoeda::porSymbol($criptomoeda)->get()->last()->preco_lance;
-
-
-            $precoMedioDaCriptomoedaMenosZeroCincoPorcento = $precoMedioDaCriptomoeda - ($precoMedioDaCriptomoeda * 0.005);
-
-            $precoMaisRecenteEhMenorDoQueZeroCincoPorcentoDoPrecoMedio = ($precoMaisRecenteDaCriptomoeda < $precoMedioDaCriptomoedaMenosZeroCincoPorcento);
-
-            if ($precoMaisRecenteEhMenorDoQueZeroCincoPorcentoDoPrecoMedio) {
-                $this->newLine();
-                $this->warn("O preço mais recente(US$ {$precoMaisRecenteDaCriptomoeda}) está menor do que 0.5% do que o preço médio(US$ {$precoMedioDaCriptomoeda})!");
-            }
+            return 1;
         }
+
+        $this->newLine();
+
+        $precoCriptomoeda = PrecoCriptomoeda::porSymbol($criptomoeda)->get()->last();
+
+        if (is_null($precoCriptomoeda)) {
+            $this->error(
+                __(
+                    'comandos.nao_ha_registros_criptomoeda',
+                    ['criptomoeda' => $criptomoeda]
+                )
+            );
+        } else {
+            $this->verificarPrecoMedioDaCriptomoeda($criptomoeda, $precoCriptomoeda);
+        }
+
         return 0;
+    }
+
+    private function verificarPrecoMedioDaCriptomoeda($criptomoeda, $precoCriptomoeda)
+    {
+        $verificarPrecoMedioDeUmaCriptomoeda =
+            new GerarPrecoMedioDaCriptomoeda();
+
+        $precoMedioDaCriptomoeda = $verificarPrecoMedioDeUmaCriptomoeda($criptomoeda);
+
+        $this->info(__('comandos.preco_medio_criptomoeda', [
+            'criptomoeda' => $criptomoeda,
+            'precoMedioDaCriptomoeda' => $precoMedioDaCriptomoeda,
+        ]));
+
+        $precoMaisRecenteDaCriptomoeda = (float) $precoCriptomoeda->preco_lance;
+        $precoMedioDaCriptomoedaMenosZeroCincoPorcento = $precoMedioDaCriptomoeda - ($precoMedioDaCriptomoeda * 0.005);
+
+        $precoMaisRecenteEhMenorDoQueZeroCincoPorcentoDoPrecoMedio = ($precoMaisRecenteDaCriptomoeda < $precoMedioDaCriptomoedaMenosZeroCincoPorcento);
+
+        if ($precoMaisRecenteEhMenorDoQueZeroCincoPorcentoDoPrecoMedio) {
+            $this->newLine();
+            $this->alert(__('comandos.preco_atual_menor_que_preco_medio_criptomoeda', [
+                'precoMaisRecenteDaCriptomoeda' => $precoMaisRecenteDaCriptomoeda,
+                'precoMedioDaCriptomoeda' => $precoMedioDaCriptomoeda,
+            ]));
+        }
     }
 }
