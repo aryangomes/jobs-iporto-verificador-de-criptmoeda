@@ -5,7 +5,7 @@ namespace App\Http\Actions;
 
 use App\Models\PrecoCriptomoeda;
 
-class GerarPrecoMedioDaCriptomoeda
+class CalcularPrecoMedioDaCriptomoeda
 {
 
     public function __invoke(string $criptomoeda): float

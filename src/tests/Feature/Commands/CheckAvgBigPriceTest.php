@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Commands;
 
-use App\Http\Actions\GerarPrecoMedioDaCriptomoeda;
+use App\Http\Actions\CalcularPrecoMedioDaCriptomoeda;
 use App\Models\PrecoCriptomoeda;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -47,7 +46,7 @@ class CheckAvgBigPriceTest extends TestCase
         $this->artisan("c:saveBidPriceOnDataBase {$criptomoeda}")->assertSuccessful();
 
         $verificarPrecoMedioDeUmaCriptomoeda =
-            new GerarPrecoMedioDaCriptomoeda();
+            new CalcularPrecoMedioDaCriptomoeda();
 
         $precoMedioDaCriptomoeda = $verificarPrecoMedioDeUmaCriptomoeda($criptomoeda);
 
@@ -74,7 +73,7 @@ class CheckAvgBigPriceTest extends TestCase
         $this->artisan("c:saveBidPriceOnDataBase {$criptomoeda}")->assertSuccessful();
 
         $verificarPrecoMedioDeUmaCriptomoeda =
-            new GerarPrecoMedioDaCriptomoeda();
+            new CalcularPrecoMedioDaCriptomoeda();
 
         $precoMedioDaCriptomoeda = $verificarPrecoMedioDeUmaCriptomoeda($criptomoeda);
 

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Actions\GerarPrecoMedioDaCriptomoeda;
+use App\Http\Actions\CalcularPrecoMedioDaCriptomoeda;
 use App\Models\PrecoCriptomoeda;
 use Exception;
 use Illuminate\Console\Command;
@@ -58,7 +58,7 @@ class CheckAvgBigPrice extends Command
     private function verificarPrecoMedioDaCriptomoeda($criptomoeda, $precoCriptomoeda)
     {
         $verificarPrecoMedioDeUmaCriptomoeda =
-            new GerarPrecoMedioDaCriptomoeda();
+            new CalcularPrecoMedioDaCriptomoeda();
 
         $precoMedioDaCriptomoeda = $verificarPrecoMedioDeUmaCriptomoeda($criptomoeda);
 
